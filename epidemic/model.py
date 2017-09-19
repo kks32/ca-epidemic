@@ -35,6 +35,7 @@ class Epidemic(Model):
             cell = Cell((x, y), self)
             if random() < .1:
                 cell.state = cell.ALIVE
+                cell.infection = random
             self.grid.place_agent(cell, (x, y))
             self.schedule.add(cell)
         self.running = True
