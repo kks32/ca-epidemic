@@ -1,3 +1,19 @@
+# Colour cells based on infection level
+def colourCell(variable):
+    colour = "white"
+    if (variable == 0):
+        colour = "white"
+    elif (variable <= 0.25 and variable > 0.):
+        colour = "yellow"
+    elif (variable <= 0.5 and variable > 0.25):
+        colour = "green"
+    elif (variable <= 0.75 and variable > 0.5):
+        colour = "red"
+    else:
+        colour = "black"
+    return colour
+
+# Visualiser
 def portrayCell(cell):
     '''
     This function is registered with the visualization server to be called
@@ -14,5 +30,5 @@ def portrayCell(cell):
         "Layer": 0,
         "x": cell.x,
         "y": cell.y,
-        "Color": "black" if cell.isAlive else "white"
+        "Color": colourCell(cell.infectionLevel)
     }

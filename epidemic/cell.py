@@ -1,3 +1,5 @@
+from random import random
+
 from mesa import Agent
 
 
@@ -38,7 +40,6 @@ class Cell(Agent):
         because our current state may still be necessary for our neighbors
         to calculate their next state.
         '''
-
         # Get the neighbors and apply the rules on whether to be alive or dead
         # at the next tick.
         live_neighbors = sum(neighbor.isAlive for neighbor in self.neighbors)
@@ -47,12 +48,14 @@ class Cell(Agent):
         self._nextState = self.state
         if self.isAlive:
             # Set infection level to sum of all active neighbours
-            self.infection = max(0.9, live_neighbors * 0.2)
+            self.infection += min(0.9, live_neighbors * random() * 0.1)
             if live_neighbors < 1:
                 self._nextState = self.DEAD
         else:
             if live_neighbors == 3:
                 self._nextState = self.ALIVE
+                # No infection on first coming alive
+                self.infection = 0
 
     def advance(self):
         '''
