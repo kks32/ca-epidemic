@@ -19,6 +19,7 @@ class Cell(Agent):
         self.state = init_state
         self.infection = infection_level
         self._nextState = None
+        self.time = 0
 
     @property
     def infectionLevel(self):
@@ -47,11 +48,20 @@ class Cell(Agent):
         # Assume nextState is unchanged, unless changed below.
         self._nextState = self.state
         if self.isAlive:
+            # Increament time being alive
+            self.time += 1
             # Set infection level to sum of all active neighbours
-            self.infection += min(0.9, live_neighbors * random() * 0.1)
+            infection_probability = 0.
+            for neighbor in self.neighbors:
+                infection_probability += neighbor.infectionLevel * 0.1
+
+            # Infection can happen after 3 steps
+            if self.time > 3:
+                self.infection += min(0.9, infection_probability)
             if live_neighbors < 1:
                 self._nextState = self.DEAD
         else:
+            # Should have 3 neighbours
             if live_neighbors == 3:
                 self._nextState = self.ALIVE
                 # No infection on first coming alive
