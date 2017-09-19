@@ -20,7 +20,17 @@ class Cell(Agent):
         self.infection = infection_level
         self._nextState = None
         self.time = 0
-
+        # Time before a cell is fully infectious to its capacity
+        self.infection_time = 50.
+        self.infectious = False
+    
+    @property
+    def isInfectious(self):
+        if (self.infectious or (self.time > self.infection_time and self.state == self.ALIVE)):
+            return True
+        else:
+            return False
+    
     @property
     def infectionLevel(self):
         return self.infection
@@ -35,7 +45,7 @@ class Cell(Agent):
 
     def step(self):
         '''
-        Compute if the cell will be dead or alive at the next tick.  This is
+        Compute if the cell will be dead or alive at the next tick.  Th#is is
         based on the number of alive or dead neighbors.  The state is not
         changed here, but is just computed and stored in self._nextState,
         because our current state may still be necessary for our neighbors
@@ -45,6 +55,12 @@ class Cell(Agent):
         # at the next tick.
         live_neighbors = sum(neighbor.isAlive for neighbor in self.neighbors)
 
+        # Check if at least one active neighbour is infectious
+        infectious_neighbour = False
+        for neighbour in self.neighbors:
+            if neighbour.isInfectious:
+                infectious_neighbour = True
+                
         # Assume nextState is unchanged, unless changed below.
         self._nextState = self.state
         if self.isAlive:
@@ -53,16 +69,16 @@ class Cell(Agent):
             # Set infection level to sum of all active neighbours
             infection_probability = 0.
             for neighbor in self.neighbors:
-                infection_probability += neighbor.infectionLevel * 0.1
+                if neighbor.isInfectious:
+                    infection_probability += neighbor.infectionLevel * 1.0 / self.infection_time
 
-            # Infection can happen after 3 steps
-            if self.time > 3:
-                self.infection += min(0.9, infection_probability)
-            if live_neighbors < 1:
+            self.infection += min(0.9, infection_probability)
+            # Deaths
+            if self.time > 30 and live_neighbors <=2 and random() > .75:
                 self._nextState = self.DEAD
         else:
-            # Should have 3 neighbours
-            if live_neighbors == 3:
+            # If there is an infected neighbour
+            if infectious_neighbour:
                 self._nextState = self.ALIVE
                 # No infection on first coming alive
                 self.infection = 0

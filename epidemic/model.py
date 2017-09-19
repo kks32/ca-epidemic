@@ -33,9 +33,11 @@ class Epidemic(Model):
         # ALIVE and some to DEAD.
         for (contents, x, y) in self.grid.coord_iter():
             cell = Cell((x, y), self)
+            #if y > 37.5 and y < 62.5 and x > 37.5 and x < 62.5:
             if random() < .1:
                 cell.state = cell.ALIVE
-                cell.infection = 0.1 * random()
+                cell.infection = random()
+                cell.infectious = True
             self.grid.place_agent(cell, (x, y))
             self.schedule.add(cell)
         self.running = True
