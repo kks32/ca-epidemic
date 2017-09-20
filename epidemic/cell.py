@@ -8,9 +8,8 @@ class Cell(Agent):
 
     DEAD = 0
     ALIVE = 1
-    INFECTION = 0.
 
-    def __init__(self, pos, model, init_state=DEAD, infection_level=INFECTION):
+    def __init__(self, pos, model, init_state=DEAD, infection_level=0.):
         '''
         Create a cell, in the given state, at the given x, y position.
         '''
