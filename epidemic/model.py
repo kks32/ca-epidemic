@@ -23,7 +23,7 @@ class Epidemic(Model):
         # Use SimultaneousActivation which simulates all the cells
         # computing their next state simultaneously.  This needs to
         # be done because each cell's next state depends on the current
-        # state of all its neighbors -- before they've changed.
+        # state of all its neighbours -- before they've changed.
         self.schedule = SimultaneousActivation(self)
 
         # Use a simple grid, where edges wrap around.
