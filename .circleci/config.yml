@@ -6,9 +6,9 @@ jobs:
       - image: circleci/python:3.6.1
     steps:
       - checkout
-      # GCC 6.3
+      # Python3 Virtualenv
       - run:
-          name: Install dependencies
+          name: Install dependencies and compile
           command: |
             python3 -m venv venv
             . venv/bin/activate
