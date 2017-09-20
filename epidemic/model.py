@@ -15,13 +15,12 @@ class Epidemic(Model):
     Game of Life.
     '''
 
-    def __init__(self, height, width):
+    def __init__(self, height, width, map):
         '''
-        Create a new playing area of (height, width) cells.
+        Create a new playing area of (height, width) cells and map.
         '''
-
-        map = io.imread("/home/krishna/devel/others/charlotte/ca-epidemic/image_pixel/africa.png", as_grey=True)
-        map = transform.rotate(map,-90)
+        # Greyscale image
+        self.map = map 
          
         # Set up the grid and schedule.
 
@@ -39,7 +38,7 @@ class Epidemic(Model):
         for (contents, x, y) in self.grid.coord_iter():
             cell = Cell((x, y), self)
             # Creating a sea in the middle of the grid
-            if map[x,y] == 1.0:
+            if self.map[x,y] == 1.0:
                 if random() < 0.1:
                     cell.state = cell.ALIVE
                     cell.infection = random()
