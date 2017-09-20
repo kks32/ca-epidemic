@@ -39,9 +39,14 @@ class Epidemic(Model):
             cell = Cell((x, y), self)
             # Creating a sea in the middle of the grid
             if self.map[x,y] == 1.0:
-                if random() < 0.1:
-                    cell.state = cell.ALIVE
+                if y > 37.5 and y < 55 and x > 37.5 and x < 62.5:
                     cell.infection = random()
+                    cell.infectious = True
+                    cell.mutability = cell.IMMUTABLE
+                if y > 58 and y < 68 and x > 60 and x < 70:
+                # if y > 60 and y < 65 and x > 65 and x < 70:
+                    cell.mobility = cell.MOBILE
+                    cell.infection = 1E-15 * random()
                     cell.infectious = True
             else:
                 cell.state = cell.ALIVE

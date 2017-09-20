@@ -9,12 +9,27 @@ class Cell(Agent):
     DEAD = 0
     ALIVE = 1
 
-    '''Represents a single is active during a simulation or not.'''
+    '''Represents a Cell is active during a simulation or not.'''
 
     INACTIVE = 0
     ACTIVE = 1
 
-    def __init__(self, pos, model, init_state=DEAD, infection_level=0., activity_state=ACTIVE):
+    '''Represents a Cell is mobile during a simulation or not.'''
+    IMMOBILE = 0
+    MOBILE = 1
+
+    '''Represents a Cell is immutable during a simulation or not.'''
+    IMMUTABLE = 0
+    MUTABLE = 1
+
+    
+
+    def __init__(self, pos, model, \
+                 init_state=DEAD, \
+                 infection_level=0., \
+                 activity_state=ACTIVE, \
+                 mutability_status=MUTABLE, \
+                 mobility_state=IMMOBILE): # Cells are immobile by default
         '''
         Create a cell, in the given state, at the given x, y position.
         '''
@@ -24,14 +39,23 @@ class Cell(Agent):
         self.infection = infection_level
         self._nextState = None
         self.time = 0
-        # Time before a cell is fully infectious to its capacity
-        self.infection_time = 50.
         self.infectious = False
         self.activity = activity_state
+        self.mobility = mobility_state
+        self.mutability = mutability_status
+        # Time before a cell is fully infectious to its capacity
+        self.infection_time = 50.
     
     @property
     def isInfectious(self):
-        if (self.infectious or (self.time > self.infection_time and self.state == self.ALIVE)):
+        # If cell is set as infection
+        if (self.infectious or \
+            # Ready for infection
+            (self.time > self.infection_time and \
+             # Infection level is greater than 0
+             self.infection > 0. and \
+             # Cell is active
+             self.state == self.ALIVE)):
             return True
         else:
             return False
@@ -40,6 +64,10 @@ class Cell(Agent):
     def infectionLevel(self):
         return self.infection
 
+    @property
+    def isMobile(self):
+        return self.mobility == self.MOBILE
+    
     @property
     def isActive(self):
         return self.activity == self.ACTIVE
@@ -67,31 +95,44 @@ class Cell(Agent):
 
             # Check if at least one active neighbour is infectious
             infectious_neighbour = False
+
+            # Set infection level to sum of all active neighbours
+            infection_probability = 0.
+
+            # Set Mobile neighbour as false
+            mobile_neighbour = False
+            
+            sign = +1.0
+            # When it is more than the infection time
+            if self.time > 2 * self.infection_time:
+                sign = -1.0
+
+            # Iterate over neighbours
             for neighbour in self.neighbours:
                 if neighbour.isInfectious:
                     infectious_neighbour = True
-                    
+                    infection_probability += (0.9 * random() * neighbour.infectionLevel) * \
+                                             1.0 / self.infection_time
+                if neighbour.isMobile:
+                    mobile_neighbour = True
             # Assume nextState is unchanged, unless changed below.
-            self._nextSstate = self.state
+            self._nextState = self.state
             if self.isAlive:
                 # Increament time being alive
                 self.time += 1
-                # Set infection level to sum of all active neighbours
-                infection_probability = 0.
-                for neighbour in self.neighbours:
-                    if neighbour.isInfectious:
-                        infection_probability += neighbour.infectionLevel * 1.0 / self.infection_time
-
-                self.infection += min(0.9, infection_probability)
+                if self.mutability == self.MUTABLE:
+                    self.infection += min(0.9, infection_probability)
                 # Deaths
-                if self.time > 30 and live_neighbours <=2 and random() > .75:
+                if self.time > 50 and random() > .5 and self.mutability == self.MUTABLE:
                     self._nextState = self.DEAD
+                    self.infection = 0.
             else:
-                # If there is an infected neighbour
-                if infectious_neighbour:
+                # If there is an infected and a mobile neighbour
+                if mobile_neighbour and infectious_neighbour:
                     self._nextState = self.ALIVE
+                    self.mobility = self.MOBILE
                     # No infection on first coming alive
-                    self.infection = 0
+                    # self.infection = 0
         # Cell is inactive during simulation
         else:
             self.infection = 0

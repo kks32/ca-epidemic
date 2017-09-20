@@ -3,11 +3,13 @@ def colourCell(variable):
     colour = "white"
     if (variable == 0):
         colour = "white"
-    elif (variable <= 0.25 and variable > 0.):
+    elif (variable > 0. and variable <= 0.001):
+        colour = "pink"
+    elif (variable > 0.1 and variable <= 0.25):
         colour = "yellow"
-    elif (variable <= 0.5 and variable > 0.25):
+    elif (variable > 0.25 and variable <= 0.5):
         colour = "green"
-    elif (variable <= 0.75 and variable > 0.5):
+    elif (variable > 0.5 and variable <= 0.75):
         colour = "red"
     else:
         colour = "black"
