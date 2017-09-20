@@ -30,5 +30,5 @@ def portrayCell(cell):
         "Layer": 0,
         "x": cell.x,
         "y": cell.y,
-        "Color": colourCell(cell.infectionLevel)
+        "Color":  colourCell(cell.infectionLevel) if cell.isActive else "blue"
     }
