@@ -1,6 +1,8 @@
 # Epidemic propagation
 > Based on Mesa [Game of Life](https://github.com/projectmesa/mesa/tree/master/examples/conways_game_of_life)
 
+[![CircleCI](https://circleci.com/gh/kks32/ca-epidemic.svg?style=svg)](https://circleci.com/gh/kks32/ca-epidemic)
+
 ## Virtualenv
 
 ```
