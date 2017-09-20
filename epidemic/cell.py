@@ -112,7 +112,7 @@ class Cell(Agent):
                 if neighbour.isInfectious:
                     infectious_neighbour = True
                     infection_probability += (0.9 * random() * neighbour.infectionLevel) * \
-                                             1.0 / self.infection_time
+                                             1.0 / self.infection_time * sign
                 if neighbour.isMobile:
                     mobile_neighbour = True
             # Assume nextState is unchanged, unless changed below.
