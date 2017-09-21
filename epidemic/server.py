@@ -6,7 +6,7 @@ from skimage import io, transform
 from epidemic.portrayal import portrayCell
 from epidemic.model import Epidemic
 
-map = io.imread("./image_pixel/africa.png", as_grey=True)
+map = io.imread("./image_pixel/monkey.png", as_grey=True)
 map = transform.rotate(map,-90)
 
 # Make a world that is 50x50, on a 250x250 display.

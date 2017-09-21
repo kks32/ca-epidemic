@@ -41,7 +41,7 @@ class Epidemic(Model):
             if self.map[x,y] == 1.0:
                 if y > 37.5 and y < 55 and x > 37.5 and x < 62.5:
                     cell.mobility = cell.IMMOBILE
-                    cell.infection = random()
+                    cell.infection = 0.5 #random()
                     cell.infectious = True
                     cell.mutability = cell.IMMUTABLE
                 if y > 56 and y < 69 and x > 59 and x < 71:

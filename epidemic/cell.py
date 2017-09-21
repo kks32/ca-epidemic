@@ -49,9 +49,9 @@ class Cell(Agent):
         self.mobility = mobility_state
         self.mutability = mutability_status
         # Time before a cell is fully infectious to its capacity
-        self.infection_time = 50.
+        self.infection_time = 5.
         # Time for which it will remain infectious
-        self.active_infection_time = 50.
+        self.active_infection_time = 5.
         self.threshold_infection_level = 0.5
     
     @property
