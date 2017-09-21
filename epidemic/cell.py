@@ -43,7 +43,7 @@ class Cell(Agent):
         self.infected_time = 0
         self.globaltime = 0
         self.starttime = 0
-        self.endtime = 350
+        self.endtime = 500
         self.infectious = False
         self.activity = activity_state
         self.mobility = mobility_state
@@ -113,8 +113,13 @@ class Cell(Agent):
             
             sign = +1.0
             # When it is more than the infection time
-            if self.infected_time > (self.infection_time + self.active_infection_time):
-                sign = -1.0
+            if self.infected_time > self.infection_time:
+                # Infection level remains stable
+                if self.infected_time < (self.infection_time + self.active_infection_time):
+                    sign = 0.
+                # Infection effect decreases to a threshold
+                else:
+                    sign = -1.0
 
             # Iterate over neighbours
             for neighbour in self.neighbours:
