@@ -51,7 +51,8 @@ class Cell(Agent):
         # Time before a cell is fully infectious to its capacity
         self.infection_time = 50.
         # Time for which it will remain infectious
-        self.active_infection_time = 0.
+        self.active_infection_time = 50.
+        self.threshold_infection_level = 0.5
     
     @property
     def isInfectious(self):
@@ -140,8 +141,8 @@ class Cell(Agent):
                     if self.infection > 1.E-10:
                         self.infected_time += 1
                     # Level of infection
-                    if self.infection <= 0:
-                        self.infection = 0.
+                    if self.infection < self.threshold_infection_level and sign == -1.0:
+                        self.infection = self.threshold_infection_level
                 # Deaths
                 if self.globaltime > self.endtime and self.mutability == self.MUTABLE:
                     self._nextState = self.DEAD
