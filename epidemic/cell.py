@@ -39,19 +39,26 @@ class Cell(Agent):
         self.infection = infection_level
         self._nextState = None
         self.time = 0
+        self.active_time = 0
+        self.infected_time = 0
+        self.globaltime = 0
+        self.starttime = 0
+        self.endtime = 350
         self.infectious = False
         self.activity = activity_state
         self.mobility = mobility_state
         self.mutability = mutability_status
         # Time before a cell is fully infectious to its capacity
         self.infection_time = 50.
+        # Time for which it will remain infectious
+        self.active_infection_time = 0.
     
     @property
     def isInfectious(self):
         # If cell is set as infection
         if (self.infectious or \
             # Ready for infection
-            (self.time > self.infection_time and \
+            (self.infected_time > self.infection_time and \
              # Infection level is greater than 0
              self.infection > 0. and \
              # Cell is active
@@ -81,6 +88,7 @@ class Cell(Agent):
         return self.model.grid.neighbor_iter((self.x, self.y), True)
 
     def step(self):
+        # If a cell is active
         if self.activity == self.ACTIVE:
             '''
             Compute if the cell will be dead or alive at the next tick.  Th#is is
@@ -104,7 +112,7 @@ class Cell(Agent):
             
             sign = +1.0
             # When it is more than the infection time
-            if self.time > 2 * self.infection_time:
+            if self.infected_time > (self.infection_time + self.active_infection_time):
                 sign = -1.0
 
             # Iterate over neighbours
@@ -113,22 +121,34 @@ class Cell(Agent):
                     infectious_neighbour = True
                     infection_probability += (0.9 * random() * neighbour.infectionLevel) * \
                                              1.0 / self.infection_time * sign
+
                 if neighbour.isMobile:
                     mobile_neighbour = True
+
+            # When a neighbour is mobile
+            if mobile_neighbour:
+                self.time += 1
+            
             # Assume nextState is unchanged, unless changed below.
             self._nextState = self.state
             if self.isAlive:
                 # Increament time being alive
-                self.time += 1
+                self.active_time += 1
                 if self.mutability == self.MUTABLE:
                     self.infection += min(0.9, infection_probability)
+                    # Duration of infection
+                    if self.infection > 1.E-10:
+                        self.infected_time += 1
+                    # Level of infection
+                    if self.infection <= 0:
+                        self.infection = 0.
                 # Deaths
-                if self.time > 50 and random() > .5 and self.mutability == self.MUTABLE:
+                if self.globaltime > self.endtime and self.mutability == self.MUTABLE:
                     self._nextState = self.DEAD
                     self.infection = 0.
             else:
-                # If there is an infected and a mobile neighbour
-                if mobile_neighbour and infectious_neighbour:
+                # If there is a mobile neighbour
+                if mobile_neighbour and self.time > self.infection_time:
                     self._nextState = self.ALIVE
                     self.mobility = self.MOBILE
                     # No infection on first coming alive
@@ -136,6 +156,10 @@ class Cell(Agent):
         # Cell is inactive during simulation
         else:
             self.infection = 0
+
+        # Increament global time
+        self.globaltime += 1
+        
     def advance(self):
         '''
         Set the state to the new computed state -- computed in step().
