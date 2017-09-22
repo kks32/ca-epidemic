@@ -40,17 +40,18 @@ class Epidemic(Model):
             # Creating a sea in the middle of the grid
             if self.map[x,y] == 1.0:
                 if y > 37.5 and y < 55 and x > 37.5 and x < 62.5:
+                    cell.state = cell.ALIVE
                     cell.mobility = cell.IMMOBILE
                     cell.infection = random()
                     cell.infectious = True
                     cell.mutability = cell.IMMUTABLE
                 if y > 56 and y < 69 and x > 59 and x < 71:
                 # if y > 60 and y < 65 and x > 65 and x < 70:
+                    cell.state = cell.ALIVE
                     cell.mobility = cell.MOBILE
-                    cell.infection = 1.0E-15 * random()
+                    cell.infection = 0.
                     cell.infectious = True
             else:
-                cell.state = cell.ALIVE
                 cell.mobility = cell.IMMOBILE
                 cell.activity = cell.INACTIVE
             self.grid.place_agent(cell, (x, y))

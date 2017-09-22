@@ -1,11 +1,13 @@
 # Colour cells based on infection level
-def colourCell(variable):
+def colourCell(cell):
+    variable = cell.infectionLevel
     colour = "white"
     if (variable == 0):
-        colour = "white"
-    elif (variable > 0. and variable <= 0.001):
-        colour = "pink"
-    elif (variable > 0.001 and variable <= 0.25):
+        if (cell.isAlive):
+            colour = "pink"
+        else:
+            colour = "white"
+    elif (variable > 0. and variable <= 0.25):
         colour = "yellow"
     elif (variable > 0.25 and variable <= 0.5):
         colour = "green"
@@ -20,11 +22,11 @@ def colourCell(variable):
 # Colour rectangle
 def colourRectange(cell):
     colour = "white"
-    if cell.isActive:
-        if (cell.isAlive):
-            colour = "pink"
-    else:
+    if (cell.isMobile):
+        colour = "pink"
+    if not (cell.isActive):
         colour = "blue"
+    return colour
 
 # Visualiser
 def portrayCell(cell):
@@ -43,6 +45,6 @@ def portrayCell(cell):
         "Layer": 0,
         "x": cell.x,
         "y": cell.y,
-        #"Color": "white" if cell.isMobile else "black"
-        "Color": colourCell(cell.infectionLevel) if cell.isActive else "blue"
+        #"Color": colourRectange(cell)
+        "Color": colourCell(cell) if cell.isActive else "blue"
     }

@@ -37,6 +37,7 @@ class Cell(Agent):
         self.x, self.y = pos
         self.state = init_state
         self.infection = infection_level
+        self.max_infection_level = 0.
         self._nextState = None
         self.time = 0
         self.active_time = 0
@@ -44,7 +45,7 @@ class Cell(Agent):
         self.globaltime = 0
         self.starttime = 0
         self.endtime = 500
-        self.immobiletime = 250
+        self.mobiletime = 250
         self.infectious = False
         self.activity = activity_state
         self.mobility = mobility_state
@@ -52,7 +53,7 @@ class Cell(Agent):
         # Time before a cell is fully infectious to its capacity
         self.infection_time = 50.
         # Time for which it will remain infectious
-        self.active_infection_time = 50.
+        self.active_infection_time = 100.
         self.threshold_infection_level = 0.5
     
     @property
@@ -124,18 +125,18 @@ class Cell(Agent):
 
             # Iterate over neighbours
             for neighbour in self.neighbours:
-                if neighbour.isInfectious:
+                if neighbour.isInfectious and neighbour.isAlive:
                     infectious_neighbour = True
                     infection_probability += (0.9 * random() * neighbour.infectionLevel) * \
                                              1.0 / self.infection_time * sign
 
-                if neighbour.isMobile:
+                if neighbour.isMobile and neighbour.isAlive:
                     mobile_neighbour = True
 
             # When a neighbour is mobile
             if mobile_neighbour:
                 self.time += 1
-            
+
             # Assume nextState is unchanged, unless changed below.
             self._nextState = self.state
             if self.isAlive:
@@ -146,25 +147,34 @@ class Cell(Agent):
                     # Duration of infection
                     if self.infection > 1.E-10:
                         self.infected_time += 1
+
+                    # Highest infection level
+                    if self.infection > self.max_infection_level and sign == 1.0:
+                        self.max_infection_level = self.infection
+
                     # Level of infection
                     if self.infection < self.threshold_infection_level and sign == -1.0:
-                        self.infection = self.threshold_infection_level
+                        if (self.max_infection_level > self.threshold_infection_level):
+                            self.infection = self.threshold_infection_level
+                        else:
+                            self.infection = self.max_infection_level
                 # Deaths
                 if self.globaltime > self.endtime and self.mutability == self.MUTABLE:
                     self._nextState = self.DEAD
                     self.infection = 0.
+
+                # After a certain time cell becomes immobile
+                if self.globaltime > self.mobiletime and self.isAlive:
+                    self._nextState = self.IMMOBILE
+
             else:
                 # If there is a mobile neighbour
-                if mobile_neighbour and self.time > self.infection_time and self.globaltime < self.immobiletime:
+                if mobile_neighbour and self.time > self.infection_time and self.globaltime < self.mobiletime:
                     self._nextState = self.ALIVE
                     self.mobility = self.MOBILE
                     # No infection on first coming alive
                     # self.infection = 0
 
-            # After a certain time cell becomes immobile
-            if self.globaltime > self.immobiletime:
-                self.mobility = self.IMMOBILE
-            
         # Cell is inactive during simulation
         else:
             self.infection = 0
