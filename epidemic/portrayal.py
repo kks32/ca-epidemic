@@ -2,21 +2,21 @@
 def colourCell(cell):
     variable = cell.infectionLevel
     colour = "white"
-    if (variable == 0):
-        if (cell.isAlive):
+    if (cell.isAlive):
+        if (variable == 0):
             colour = "pink"
+        elif (variable > 0. and variable <= 0.25):
+            colour = "yellow"
+        elif (variable > 0.25 and variable <= 0.5):
+            colour = "green"
+        elif (variable > 0.5 and variable <= 0.75):
+            colour = "red"
+        elif (variable > 0.75):
+            colour = "black"
         else:
-            colour = "white"
-    elif (variable > 0. and variable <= 0.25):
-        colour = "yellow"
-    elif (variable > 0.25 and variable <= 0.5):
-        colour = "green"
-    elif (variable > 0.5 and variable <= 0.75):
-        colour = "red"
-    elif (variable > 0.75):
-        colour = "black"
+            colour = "purple"
     else:
-        colour = "purple"
+        colour = "brown"
     return colour
 
 # Colour rectangle
