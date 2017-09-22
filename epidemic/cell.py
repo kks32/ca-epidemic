@@ -45,13 +45,14 @@ class Cell(Agent):
         self.globaltime = 0
         self.starttime = 0
         self.endtime = 500
-        self.mobiletime = 120
+        self.mobiletime = 250
         self.infectious = False
         self.activity = activity_state
         self.mobility = mobility_state
         self.mutability = mutability_status
         # Time before a cell is fully infectious to its capacity
         self.infection_time = 50.
+        self.movement_time = 20.
         # Time for which it will remain infectious
         self.active_infection_time = 100.
         self.threshold_infection_level = 0.5
@@ -169,7 +170,7 @@ class Cell(Agent):
 
             else:
                 # If there is a mobile neighbour
-                if mobile_neighbour and self.time > self.infection_time and self.globaltime < self.mobiletime:
+                if mobile_neighbour and self.time > self.movement_time and self.globaltime < self.mobiletime:
                     self._nextState = self.ALIVE
                     self.mobility = self.MOBILE
                     # No infection on first coming alive
