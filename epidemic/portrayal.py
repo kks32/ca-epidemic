@@ -17,6 +17,15 @@ def colourCell(variable):
         colour = "purple"
     return colour
 
+# Colour rectangle
+def colourRectange(cell):
+    colour = "white"
+    if cell.isActive:
+        if (cell.isAlive):
+            colour = "pink"
+    else:
+        colour = "blue"
+
 # Visualiser
 def portrayCell(cell):
     '''
@@ -35,5 +44,5 @@ def portrayCell(cell):
         "x": cell.x,
         "y": cell.y,
         #"Color": "white" if cell.isMobile else "black"
-        "Color":  colourCell(cell.infectionLevel) if cell.isActive else "blue"
+        "Color": colourCell(cell.infectionLevel) if cell.isActive else "blue"
     }

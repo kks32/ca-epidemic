@@ -44,6 +44,7 @@ class Cell(Agent):
         self.globaltime = 0
         self.starttime = 0
         self.endtime = 500
+        self.immobiletime = 250
         self.infectious = False
         self.activity = activity_state
         self.mobility = mobility_state
@@ -154,11 +155,16 @@ class Cell(Agent):
                     self.infection = 0.
             else:
                 # If there is a mobile neighbour
-                if mobile_neighbour and self.time > self.infection_time:
+                if mobile_neighbour and self.time > self.infection_time and self.globaltime < self.immobiletime:
                     self._nextState = self.ALIVE
                     self.mobility = self.MOBILE
                     # No infection on first coming alive
                     # self.infection = 0
+
+            # After a certain time cell becomes immobile
+            if self.globaltime > self.immobiletime:
+                self.mobility = self.IMMOBILE
+            
         # Cell is inactive during simulation
         else:
             self.infection = 0
