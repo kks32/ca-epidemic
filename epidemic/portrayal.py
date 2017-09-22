@@ -16,7 +16,7 @@ def colourCell(cell):
         else:
             colour = "purple"
     else:
-        colour = "brown"
+        colour = "lightyellow"
     return colour
 
 # Colour rectangle
