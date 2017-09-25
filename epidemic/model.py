@@ -53,13 +53,13 @@ class Epidemic(Model):
                     cell.mobility = cell.MOBILE
                     cell.infection = 0.
                     cell.starttime = 50 #1950
-                    cell.endtime = 150 #2050
+                    cell.endtime = 280 #2050
                     cell.infectious = True
-                if y > 32  and y < 36 and x > 70 and x < 75:
+                if y > 32  and y < 36 and x > 90 and x < 94:
                 # if y > 60 and y < 65 and x > 65 and x < 70:
                     cell.state = cell.DEAD
                     cell.starttime = 150 #2050
-                    cell.endtime = 250 #2150
+                    cell.endtime = 350 #2150
                     cell.mobility = cell.MOBILE
                     cell.infection = 0.
                     cell.infectious = True
