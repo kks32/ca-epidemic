@@ -27,6 +27,8 @@ class Cell(Agent):
     def __init__(self, pos, model, \
                  init_state=DEAD, \
                  infection_level=0., \
+                 start_time = 0., \
+                 end_time = 0., \
                  activity_state=ACTIVE, \
                  mutability_status=MUTABLE, \
                  mobility_state=IMMOBILE): # Cells are immobile by default
@@ -43,9 +45,9 @@ class Cell(Agent):
         self.active_time = 0
         self.infected_time = 0
         self.globaltime = 0
-        self.starttime = 0
-        self.endtime = 500
-        self.mobiletime = 250
+        self.starttime = start_time
+        self.endtime = end_time
+        self.mobiletime = self.starttime + 250
         self.infectious = False
         self.activity = activity_state
         self.mobility = mobility_state
@@ -74,6 +76,11 @@ class Cell(Agent):
     @property
     def infectionLevel(self):
         return self.infection
+
+    @property
+    def getendtime(self):
+        return self.endtime
+    
 
     @property
     def isMobile(self):
@@ -124,6 +131,10 @@ class Cell(Agent):
                 else:
                     sign = -1.0
 
+                    
+            # Time for a new species to die
+            death_time = 0
+
             # Iterate over neighbours
             for neighbour in self.neighbours:
                 if neighbour.isInfectious and neighbour.isAlive:
@@ -133,6 +144,7 @@ class Cell(Agent):
 
                 if neighbour.isMobile and neighbour.isAlive:
                     mobile_neighbour = True
+                    death_time = max(death_time, neighbour.getendtime)
 
             # When a neighbour is mobile
             if mobile_neighbour:
@@ -173,13 +185,21 @@ class Cell(Agent):
                 if mobile_neighbour and self.time > self.movement_time and self.globaltime < self.mobiletime:
                     self._nextState = self.ALIVE
                     self.mobility = self.MOBILE
+                    self.endtime = death_time
+
                     # No infection on first coming alive
                     # self.infection = 0
+
+                # Bring it to life
+                if self.globaltime > self.starttime and self.globaltime < self.endtime: 
+                    self._nextState = self.ALIVE
+                    self.mobility = self.MOBILE
 
         # Cell is inactive during simulation
         else:
             self.infection = 0
 
+            
         # Increament global time
         self.globaltime += 1
         
