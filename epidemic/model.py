@@ -47,18 +47,18 @@ class Epidemic(Model):
                     cell.infection = random()
                     cell.infectious = True
                     cell.mutability = cell.IMMUTABLE
-                if y > 47  and y < 52 and x > 70 and x < 74:
+                if x > 48  and x < 54 and y > 67 and y < 71:
                 # if y > 60 and y < 65 and x > 65 and x < 70:
                     cell.state = cell.DEAD
                     cell.mobility = cell.MOBILE
                     cell.infection = 0.
-                    cell.starttime = 50 #1950
+                    cell.starttime = 0 #1950
                     cell.endtime = 280 #2050
                     cell.infectious = True
-                if y > 32  and y < 36 and x > 90 and x < 94:
+                if x > 85  and x < 89 and y > 52 and y < 56:
                 # if y > 60 and y < 65 and x > 65 and x < 70:
                     cell.state = cell.DEAD
-                    cell.starttime = 150 #2050
+                    cell.starttime = 0 #2050
                     cell.endtime = 350 #2150
                     cell.mobility = cell.MOBILE
                     cell.infection = 0.

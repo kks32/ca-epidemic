@@ -26,16 +26,16 @@ Lat: -36.71 + 0.753 = 37.462 ==> 44 pixels from bottom Africa (49 - 53 pixels) (
 ## Australopithecus
 > 16.065    18.50083333
 
-* Long: -17.31 + 16.065 => 33.375 ==> 40.38 pixels from left Africa (38 + 9 - 42 + 9 pixels)
-* Lat: -36.71 + 18.5 = 55.21 ==> 64.92 pixels from bottom Africa (63+7 - 67+7 pixels)
+* Long: -17.31 + 18.5 => 35.81 ==> 43.33 pixels from left Africa (41 + 9 - 45 + 9 pixels)
+* Lat: -36.71 + 16.065 => 52.78 ==> 62.063 pixels from bottom Africa (60+7 - 64+7 pixels)
 
 > 3.65 - 3.55 MYA (From t0 1.95  - 2.05 MYA)
 
 * steps = 1950 - 2050
 
 ##   bahrelghazali 3.58333333    36.11666667
-* Long: -17.31 + 3.58 => 20.89 ==> 25.27 pixels from left Africa (23 + 9 - 27 + 9 pixels)
-* Lat: -36.71 + 36.12 = 72.83 ==> 85.64 pixels from bottom Africa (83+7 - 87+7 pixels)
+* Long: -17.31 + 36.12 => 64.65 ==> 78.22 pixels from left Africa (76 + 9 - 80 + 9 pixels)
+* Lat: -36.71 + 3.58 = 40.29 ==> 47.38 pixels from bottom Africa (45+7 - 49+7 pixels)
 
 > 3.55 - 3.45 MYA (From t0 2.05  - 2.15 MYA)
 
