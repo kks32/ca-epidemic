@@ -34,7 +34,7 @@ Lat: -36.71 + 0.753 = 37.462 ==> 44 pixels from bottom Africa (49 - 53 pixels) (
 * steps = 1950 - 2050
 
 ##   bahrelghazali 3.58333333    36.11666667
-* Long: -17.31 + 36.12 => 64.65 ==> 78.22 pixels from left Africa (76 + 9 - 80 + 9 pixels)
+* Long: -17.31 + 36.12 => 53.43 ==> 64.65 pixels from left Africa (62 + 9 - 66 + 9 pixels)
 * Lat: -36.71 + 3.58 = 40.29 ==> 47.38 pixels from bottom Africa (45+7 - 49+7 pixels)
 
 > 3.55 - 3.45 MYA (From t0 2.05  - 2.15 MYA)
