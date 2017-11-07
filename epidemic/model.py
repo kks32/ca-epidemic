@@ -82,15 +82,14 @@ class Epidemic(Model):
         self.running = True
 
     def step(self):
-        '''
-        Have the scheduler advance each cell by one step
-        '''
-        self.schedule.step()
+       '''
+       Have the scheduler advance each cell by one step
+       '''
+ 
+       # global time
+       self.globaltime += 1
 
-        # global time
-        self.globaltime += 1
-
-        if self.globaltime > 88:
+       if self.globaltime == 88:
             for (contents, x, y) in self.grid.coord_iter():
                 cell = Cell((x, y), self)
                 # Ardipithecus R
@@ -106,4 +105,4 @@ class Epidemic(Model):
                     self.grid.place_agent(cell, (x, y))
                     self.schedule.add(cell)
 
-                    print ("Hello")
+       self.schedule.step()
