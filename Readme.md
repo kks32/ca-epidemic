@@ -29,3 +29,11 @@ Then open your browser to [http://127.0.0.1:8521/](http://127.0.0.1:8521/) and p
 * ``epidemic/server.py``: Defines an interactive visualization.
 * ``run.py``: Launches the visualization 
 
+
+## Windows installation
+
+* Install Anaconda
+* create a virtual env `conda create -n env python=3.6 anaconda`
+* `activate env`
+* `pip install -r requirements.txt`
+* `python run.py`
