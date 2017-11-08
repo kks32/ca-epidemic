@@ -22,8 +22,6 @@ class Cell(Agent):
     IMMUTABLE = 0
     MUTABLE = 1
 
-    
-
     def __init__(self, pos, model, \
                  init_state=DEAD, \
                  infection_level=0., \
@@ -173,6 +171,7 @@ class Cell(Agent):
                             self.infection = self.max_infection_level
                 # Deaths
                 if self.globaltime > self.endtime and self.mutability == self.MUTABLE:
+                    self.state = self.DEAD
                     self._nextState = self.DEAD
                     self.infection = 0.
 

@@ -21,7 +21,6 @@ class Epidemic(Model):
         # global time
         self.globaltime = 0
 
-
         # Greyscale image
         self.map = map 
          
@@ -97,7 +96,7 @@ class Epidemic(Model):
                     cell.state = cell.DEAD
                     cell.mobility = cell.MOBILE
                     cell.infection = 0.
-                    cell.starttime =90 #1150
+                    cell.starttime = 90 #1150
                     cell.endtime = 150 #1250
                     cell.infectious = True
                     cell.globaltime = self.globaltime
