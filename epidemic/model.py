@@ -6,7 +6,13 @@ from mesa.space import Grid
 
 from skimage import io, transform
 
+from mesa.datacollection import DataCollector
+
 from epidemic.cell import Cell
+
+def compute_infection(model):
+    agent_infections = [agent.infection for agent in model.schedule.agents]
+    return sum(agent_infections)
 
 
 class Epidemic(Model):
@@ -80,15 +86,18 @@ class Epidemic(Model):
             self.schedule.add(cell)
         self.running = True
 
-    def step(self):
-       '''
-       Have the scheduler advance each cell by one step
-       '''
- 
-       # global time
-       self.globaltime += 1
+        self.datacollector = DataCollector(
+            model_reporters={"Infection": compute_infection})
 
-       if self.globaltime == 88:
+    def step(self):
+        '''
+        Have the scheduler advance each cell by one step
+        '''
+ 
+        # global time
+        self.globaltime += 1
+
+        if self.globaltime == 88:
             for (contents, x, y) in self.grid.coord_iter():
                 cell = Cell((x, y), self)
                 # Ardipithecus R
@@ -103,5 +112,5 @@ class Epidemic(Model):
                     
                     self.grid.place_agent(cell, (x, y))
                     self.schedule.add(cell)
-
-       self.schedule.step()
+        self.datacollector.collect(self)
+        self.schedule.step()
